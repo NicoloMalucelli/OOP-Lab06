@@ -1,7 +1,14 @@
 package it.unibo.oop.lab.collections2;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
+
 
 /**
  * 
@@ -29,7 +36,9 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
      * 
      * think of what type of keys and values would best suit the requirements
      */
-
+	
+	Map<String, Set<U>> followed = new HashMap<>();
+	
     /*
      * [CONSTRUCTORS]
      * 
@@ -57,6 +66,10 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
     public SocialNetworkUserImpl(final String name, final String surname, final String user, final int userAge) {
         super(name, surname, user, userAge);
     }
+    
+    public SocialNetworkUserImpl(final String name, final String surname, final String user) {
+        this(name, surname, user, -1);
+    }
 
     /*
      * [METHODS]
@@ -66,17 +79,32 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
 
     @Override
     public boolean addFollowedUser(final String circle, final U user) {
-        return false;
+        Set<U> circleSet = followed.get(circle);
+        if(circleSet == null) {
+        	circleSet = new HashSet<>();
+        	followed.put(circle, circleSet);
+        }
+        return circleSet.add(user);
     }
 
     @Override
     public Collection<U> getFollowedUsersInGroup(final String groupName) {
-        return null;
+    	Set<U> groupSet = followed.get(groupName);
+    	if(groupSet == null) {
+    		return Collections.emptyList();
+    	}
+        return new HashSet<>(groupSet);
     }
 
     @Override
     public List<U> getFollowedUsers() {
-        return null;
+    	List<U> followedUser = new LinkedList<>();
+    	for(Set<U> circleSet : followed.values()) {
+    		for(U user : circleSet) {
+    			followedUser.add(user);
+    		}
+    	}
+    	return new LinkedList<>(followedUser);
     }
 
 }
