@@ -118,8 +118,23 @@ public final class UseCollection {
          * 
          * Oceania -> 38,304,000
          */
+    	
+    	Map<String, Long> continents = new HashMap<>();
+    	continents.put("Africa", 1_110_635_000L);
+    	continents.put("Americas", 972_005_000L);
+    	continents.put("Antarctica", 0L);
+    	continents.put("Asia", 4_298_723_000L);
+    	continents.put("Europe", 742_452_000L);
+    	continents.put("Oceania", 38_304_000L);
+    	
         /*
          * 8) Compute the population of the world
          */
+    	
+    	Long worldPopulation = 0L;
+    	for(Long population : continents.values()){
+    		worldPopulation += population;
+    	}
+    	System.out.println("world population is: " + worldPopulation);
     }
 }
